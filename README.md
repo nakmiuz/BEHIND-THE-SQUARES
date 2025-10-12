@@ -1,3 +1,4 @@
+<<<<<<< Updated upstream
 # Behind the Squares
 Game “Behind the Squares”; Game Development Project for the College Open Doors 2025 Event
 Guess the hidden image by uncovering squares — fun, simple, and RPKK-themed!
@@ -22,3 +23,7 @@ Pelin päämekaniikat:
 - Tavoitteena on arvata kuva paljastamalla mahdollisimman vähän ruutuja.
 - Pelin lopuksi pelaaja voi tallentaa tuloksensa tulostaulukkoon.
 Pelin kulku: Pelaajan tehtävänä on arvata, mitä kuvassa on, paljastamalla enintään kolme ruutua.
+=======
+# BEHIND-THE-SQUARES
+Game
+>>>>>>> Stashed changes
