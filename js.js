@@ -1,23 +1,22 @@
-/* ================== CONFIG / PUZZLES ==================
-   Put img1.jpg ... img10.jpg and logo.png.jpg next to this index.html
-   Replace each puzzle options & correct index with real data.
-*/
+/// CONFIG / PUZZLES 
+/// Replace each puzzle options with real data.
+
 const puzzles = [
-  { img: "img1.jpg", options: ["Syreeni","Mustikkapiirakka","Saturnus","Hoitokoti"], correct: 0 },
-  { img: "img2.jpg", options: ["Option A","Option B","Option C","Option D"], correct: 0 },
-  { img: "img3.jpg", options: ["Option A","Option B","Option C","Option D"], correct: 0 },
-  { img: "img4.jpg", options: ["Option A","Option B","Option C","Option D"], correct: 0 },
-  { img: "img5.jpg", options: ["Option A","Option B","Option C","Option D"], correct: 0 },
-  { img: "img6.jpg", options: ["Option A","Option B","Option C","Option D"], correct: 0 },
-  { img: "img7.jpg", options: ["Option A","Option B","Option C","Option D"], correct: 0 },
-  { img: "img8.jpg", options: ["Option A","Option B","Option C","Option D"], correct: 0 },
-  { img: "img9.jpg", options: ["Option A","Option B","Option C","Option D"], correct: 0 },
-  { img: "img10.jpg", options: ["Option A","Option B","Option C","Option D"], correct: 0 }
+  { img: "img1.jpg", options: ["Syreeni", "Mustikkapiirakka", "Saturnus", "Hoitokoti"], correct: 0 },
+  { img: "img2.jpg", options: ["Option A", "Option B", "Option C", "Option D"], correct: 0 },
+  { img: "img3.jpg", options: ["Option A", "Option B", "Option C", "Option D"], correct: 0 },
+  { img: "img4.jpg", options: ["Option A", "Option B", "Option C", "Option D"], correct: 0 },
+  { img: "img5.jpg", options: ["Option A", "Option B", "Option C", "Option D"], correct: 0 },
+  { img: "img6.jpg", options: ["Option A", "Option B", "Option C", "Option D"], correct: 0 },
+  { img: "img7.jpg", options: ["Option A", "Option B", "Option C", "Option D"], correct: 0 },
+  { img: "img8.jpg", options: ["Option A", "Option B", "Option C", "Option D"], correct: 0 },
+  { img: "img9.jpg", options: ["Option A", "Option B", "Option C", "Option D"], correct: 0 },
+  { img: "img10.jpg", options: ["Option A", "Option B", "Option C", "Option D"], correct: 0 }
 ];
 
 const LB_KEY = 'whatsbehind_leaderboard_v1';
 
-/* UI elements */
+/// UI elements
 const siteHeader = document.getElementById('siteHeader');
 const mainMenu = document.getElementById('mainMenu');
 const playBtn = document.getElementById('playBtn');
@@ -39,45 +38,45 @@ const leaderboardFull = document.getElementById('leaderboardFull');
 const leaderboardBody = document.getElementById('leaderboardBody');
 const backFromLeaderboard = document.getElementById('backFromLeaderboard');
 
-let currentIndex = 0;     
-let revealedCount = 0;    
-let score = 0;            
+let currentIndex = 0;
+let revealedCount = 0;
+let score = 0;
 const MAX_REVEALS = 3;
-let tileElements = [];    
-let roundLocked = false;  
+let tileElements = [];
+let roundLocked = false;
 
 const TRANS_MS = 520;
 
-/* --- NEW: keep the original endSection HTML so we can restore it --- */
+/// NEW: keep the original endSection HTML so we can restore it
 const END_SECTION_HTML = `
-  <h3>✅ Test is done!</h3>
+  <h3>✅ Testi on valmis!</h3>
   <p id="finalScoreText">Sait 0 / 10 oikein.</p>
-  <p>That's all! You did the test! Do you want to add yourself on the Leaderboard?</p>
+  <p>Siinä kaikki! Teit testin! Haluatko lisätä itsesi tulostaulukoon?</p>
   <div style="display:flex; gap:10px; margin-top:8px;">
-    <button id="yesSave" class="primary">Yes</button>
-    <button id="noSave" class="primary">No</button>
+    <button id="yesSave" class="primary">Kyllä</button>
+    <button id="noSave" class="primary">Ei</button>
   </div>
 `;
 
-/* Helper to restore endSection to its original markup and rebind handlers */
+/// Helper to restore endSection to its original markup and rebind handlers 
 function restoreEndSectionAndBind() {
   endSection.innerHTML = END_SECTION_HTML;
 
-  // Re-bind the "Yes" button to save (we query the newly created element)
+  /// Re-bind the "Yes" button to save (we query the newly created element)
   const yes = document.getElementById('yesSave');
   if (yes) {
     yes.addEventListener('click', () => {
       const nick = prompt("Enter your nickname:");
-      if(!nick || !nick.trim()){ alert("Nickname can't be empty."); return; }
+      if (!nick || !nick.trim()) { alert("Nickname can't be empty."); return; }
       saveResult(nick.trim());
     });
   }
 
-  // Re-bind the "No" button to replace content with goodbye (this is the same behavior you wanted)
+  /// Re-bind the "No" button to replace content with goodbye
   const no = document.getElementById('noSave');
   if (no) {
     no.addEventListener('click', () => {
-      // Replace endSection with goodbye message and back button
+      /// Replace endSection with goodbye message and back button
       endSection.innerHTML = `
         <h3>😊 Hyvää päivänjatkoa!</h3>
         <div style="margin-top:10px">
@@ -85,14 +84,14 @@ function restoreEndSectionAndBind() {
         </div>
       `;
 
-      // Bind Back to Main Page (this restarts the program)
+      /// Bind Back to Main Page (this restarts the program)
       const gb = document.getElementById('gbBack');
       if (gb) {
         gb.addEventListener('click', () => {
-          // restore original endSection markup for next games
+          /// restore original endSection markup for next games
           restoreEndSectionAndBind();
 
-          // hide endSection and reset game state so Play starts clean
+          /// hide endSection and reset game state so Play starts clean
           endSection.style.display = 'none';
           currentIndex = 0;
           score = 0;
@@ -108,57 +107,57 @@ function restoreEndSectionAndBind() {
   }
 }
 
-/* UI show/hide helpers */
-function hideElement(el){
-  if(!el) return; 
-  el.style.transition = `opacity ${TRANS_MS}ms ease`; 
-  el.style.opacity = 0; 
-  setTimeout(()=> { 
-    if(el.style.display!=="none") el.style.display = 'none'; 
-  }, TRANS_MS); 
+/// UI show/hide helpers 
+function hideElement(el) {
+  if (!el) return;
+  el.style.transition = `opacity ${TRANS_MS}ms ease`;
+  el.style.opacity = 0;
+  setTimeout(() => {
+    if (el.style.display !== "none") el.style.display = 'none';
+  }, TRANS_MS);
 }
 
-function showElement(el, display='block'){
-  if(!el) return; 
-  el.style.display = display; 
-  requestAnimationFrame(()=> { 
-    el.style.transition = `opacity ${TRANS_MS}ms ease`; 
-    el.style.opacity = 1; 
-  }); 
+function showElement(el, display = 'block') {
+  if (!el) return;
+  el.style.display = display;
+  requestAnimationFrame(() => {
+    el.style.transition = `opacity ${TRANS_MS}ms ease`;
+    el.style.opacity = 1;
+  });
 }
 
-function showMainMenu(){
+function showMainMenu() {
   siteHeader.style.display = ''; siteHeader.style.opacity = 1;
   mainMenu.style.display = 'flex'; mainMenu.style.opacity = 1;
   hideElement(gameLayout);
   hideElement(leaderboardFull);
 }
 
-function showGameScreen(){
+function showGameScreen() {
   siteHeader.style.display = ''; siteHeader.style.opacity = 1;
   hideElement(mainMenu);
   hideElement(leaderboardFull);
   showElement(gameLayout, 'flex');
 }
 
-function showStandaloneLeaderboard(){
+function showStandaloneLeaderboard() {
   siteHeader.style.display = 'none';
   mainMenu.style.display = 'none';
   hideElement(gameLayout);
   leaderboardBody.innerHTML = ''; renderLeaderboard();
   leaderboardFull.style.display = 'flex'; leaderboardFull.style.opacity = 0;
-  requestAnimationFrame(()=> { leaderboardFull.style.transition = `opacity ${TRANS_MS}ms ease`; leaderboardFull.style.opacity = 1; });
+  requestAnimationFrame(() => { leaderboardFull.style.transition = `opacity ${TRANS_MS}ms ease`; leaderboardFull.style.opacity = 1; });
 }
 
-function hideStandaloneLeaderboard(){
+function hideStandaloneLeaderboard() {
   leaderboardFull.style.transition = `opacity ${TRANS_MS}ms ease`; leaderboardFull.style.opacity = 0;
-  setTimeout(()=> { leaderboardFull.style.display = 'none'; showMainMenu(); siteHeader.style.display = ''; }, TRANS_MS);
+  setTimeout(() => { leaderboardFull.style.display = 'none'; showMainMenu(); siteHeader.style.display = ''; }, TRANS_MS);
 }
 
-function buildGrid(){
+function buildGrid() {
   gridOverlay.innerHTML = '';
   tileElements = [];
-  for(let i=0;i<16;i++){
+  for (let i = 0; i < 16; i++) {
     const tile = document.createElement('div');
     tile.className = 'tile';
     tile.tabIndex = 0;
@@ -181,16 +180,16 @@ function buildGrid(){
     tile.appendChild(inner);
 
     tile.addEventListener('click', () => onTileClick(tile));
-    tile.addEventListener('keydown', (e) => { if(e.key === 'Enter' || e.key === ' ') { e.preventDefault(); onTileClick(tile); } });
+    tile.addEventListener('keydown', (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); onTileClick(tile); } });
 
     gridOverlay.appendChild(tile);
     tileElements.push(tile);
   }
 }
 
-function loadPuzzle(i){
-  if(i < 0) i = 0;
-  if(i >= puzzles.length) i = puzzles.length - 1;
+function loadPuzzle(i) {
+  if (i < 0) i = 0;
+  if (i >= puzzles.length) i = puzzles.length - 1;
   currentIndex = i;
   const p = puzzles[currentIndex];
 
@@ -203,32 +202,32 @@ function loadPuzzle(i){
     backEl.style.backgroundPosition = `${c * 25}% ${r * 25}%`;
   });
 
-  tileElements.forEach(t => { t.classList.remove('flipped','disabled'); t.style.pointerEvents = 'auto'; });
+  tileElements.forEach(t => { t.classList.remove('flipped', 'disabled'); t.style.pointerEvents = 'auto'; });
   revealedCount = 0;
   roundLocked = false;
 
-  if(document.getElementById('choicesRow').classList.contains('hidden')){
+  if (document.getElementById('choicesRow').classList.contains('hidden')) {
     document.getElementById('choicesRow').classList.remove('hidden');
-    showElement(document.getElementById('choicesRow'),'flex');
+    showElement(document.getElementById('choicesRow'), 'flex');
   }
 
   renderChoices(p.options);
   updateBadges();
 }
 
-function onTileClick(tile){
-  if(roundLocked) return;
-  if(revealedCount >= MAX_REVEALS) return;
-  if(tile.classList.contains('flipped')) return;
+function onTileClick(tile) {
+  if (roundLocked) return;
+  if (revealedCount >= MAX_REVEALS) return;
+  if (tile.classList.contains('flipped')) return;
   tile.classList.add('flipped');
   revealedCount++;
-  if(revealedCount >= MAX_REVEALS){
-    tileElements.forEach(t => { if(!t.classList.contains('flipped')) t.classList.add('disabled'); });
+  if (revealedCount >= MAX_REVEALS) {
+    tileElements.forEach(t => { if (!t.classList.contains('flipped')) t.classList.add('disabled'); });
   }
   updateBadges();
 }
 
-function renderChoices(options){
+function renderChoices(options) {
   choicesRow.innerHTML = '';
   options.forEach((opt, idx) => {
     const btn = document.createElement('button');
@@ -240,23 +239,23 @@ function renderChoices(options){
   });
 }
 
-function onChoiceSelected(selectedIdx, btn){
-  if(roundLocked) return;
+function onChoiceSelected(selectedIdx, btn) {
+  if (roundLocked) return;
   roundLocked = true;
 
   choicesRow.querySelectorAll('.choice-btn').forEach(b => b.disabled = true);
 
   const p = puzzles[currentIndex];
   const correct = (selectedIdx === p.correct);
-  if(correct){
+  if (correct) {
     score = Math.min(10, score + 1);
-    setTimeout(()=> alert('✅ Oikein!'), 80);
+    setTimeout(() => alert('✅ Oikein!'), 80);
   } else {
-    setTimeout(()=> alert('❌ Väärin!'), 80);
+    setTimeout(() => alert('❌ Väärin!'), 80);
   }
   updateBadges();
 
-  if(currentIndex === puzzles.length - 1){
+  if (currentIndex === puzzles.length - 1) {
     const choicesEl = document.getElementById('choicesRow');
     choicesEl.style.transition = `opacity ${TRANS_MS}ms ease`;
     choicesEl.style.opacity = 0;
@@ -264,15 +263,15 @@ function onChoiceSelected(selectedIdx, btn){
       choicesEl.classList.add('hidden');
       choicesEl.style.display = 'none';
       finalScoreText.textContent = `Sait ${score} / ${puzzles.length} oikein.`;
-      // Keep endSection visible permanently
+      /// Keep endSection visible permanently
       endSection.style.display = 'block';
       endSection.style.opacity = 1;
     }, TRANS_MS);
     return;
   }
 
-  setTimeout(()=> {
-    if(currentIndex < puzzles.length - 1){
+  setTimeout(() => {
+    if (currentIndex < puzzles.length - 1) {
       loadPuzzle(currentIndex + 1);
     } else {
       finishGame();
@@ -280,43 +279,43 @@ function onChoiceSelected(selectedIdx, btn){
   }, TRANS_MS);
 }
 
-function updateBadges(){
+function updateBadges() {
   progressBadge.textContent = `Kuva: ${Math.min(currentIndex + 1, puzzles.length)} / ${puzzles.length}`;
   revealedBadge.textContent = `Paljastettu: ${revealedCount} / ${MAX_REVEALS}`;
   scoreBadge.textContent = `Pisteet: ${score}`;
 }
 
-function finishGame(){
-  finalScoreText.textContent = `You got ${score} / ${puzzles.length} correct.`;
+function finishGame() {
+  finalScoreText.textContent = `Sait ${score} / ${puzzles.length} oikein.`;
   endSection.style.display = 'block';
   endSection.style.opacity = 1;
 }
 
-function readLeaderboard(){
-  try{
+function readLeaderboard() {
+  try {
     const raw = localStorage.getItem(LB_KEY);
-    if(!raw) return [];
+    if (!raw) return [];
     return JSON.parse(raw);
-  }catch(e){ return []; }
+  } catch (e) { return []; }
 }
 
-function writeLeaderboard(arr){
-  try{ localStorage.setItem(LB_KEY, JSON.stringify(arr)); }catch(e){ console.error(e); }
+function writeLeaderboard(arr) {
+  try { localStorage.setItem(LB_KEY, JSON.stringify(arr)); } catch (e) { console.error(e); }
 }
 
-function saveResult(nickname){
+function saveResult(nickname) {
   const list = readLeaderboard();
   list.push({ name: nickname, score: score, ts: Date.now() });
-  list.sort((a,b) => (b.score - a.score) || (b.ts - a.ts));
+  list.sort((a, b) => (b.score - a.score) || (b.ts - a.ts));
   writeLeaderboard(list);
   renderLeaderboard();
   showStandaloneLeaderboard();
 }
 
-function renderLeaderboard(){
+function renderLeaderboard() {
   leaderboardBody.innerHTML = '';
   const list = readLeaderboard();
-  if(list.length === 0){
+  if (list.length === 0) {
     const tr = document.createElement('tr');
     const td = document.createElement('td'); td.colSpan = 2; td.style.padding = '12px'; td.textContent = 'No entries yet';
     tr.appendChild(td); leaderboardBody.appendChild(tr); return;
@@ -333,7 +332,7 @@ playBtn.addEventListener('click', () => {
   currentIndex = 0; score = 0;
   buildGrid();
   showGameScreen();
-  setTimeout(()=> loadPuzzle(0), 80);
+  setTimeout(() => loadPuzzle(0), 80);
 });
 
 viewLeaderboardBtn.addEventListener('click', () => {
@@ -343,11 +342,11 @@ viewLeaderboardBtn.addEventListener('click', () => {
 
 yesSave.addEventListener('click', () => {
   const nick = prompt("Enter your nickname:");
-  if(!nick || !nick.trim()){ alert("Nickname can't be empty."); return; }
+  if (!nick || !nick.trim()) { alert("Nickname can't be empty."); return; }
   saveResult(nick.trim());
 });
 
-/* ✅ Updated No button behavior: replace endSection content with goodbye and Back button */
+///* ✅ Updated No button behavior: replace endSection content with goodbye and Back button */
 noSave.addEventListener('click', () => {
   endSection.innerHTML = `
     <h3>😊 Hyvää päivänjatkoa!</h3>
@@ -356,14 +355,14 @@ noSave.addEventListener('click', () => {
     </div>
   `;
 
-  // Bind back button (restores the original endSection and resets game)
+  /// Bind back button (restores the original endSection and resets game)
   const gb = document.getElementById('gbBack');
   if (gb) {
     gb.addEventListener('click', () => {
-      // restore original end-screen markup and handlers
+      /// restore original end-screen markup and handlers
       restoreEndSectionAndBind();
 
-      // hide endSection and reset state so Play restarts clean
+      /// hide endSection and reset state so Play restarts clean
       endSection.style.display = 'none';
       currentIndex = 0;
       score = 0;
@@ -379,10 +378,10 @@ noSave.addEventListener('click', () => {
 
 backFromLeaderboard.addEventListener('click', () => hideStandaloneLeaderboard());
 
-function init(){
+function init() {
   buildGrid();
   showMainMenu();
   updateBadges();
 }
 init();
-/* End of script */
+/// End of script 
