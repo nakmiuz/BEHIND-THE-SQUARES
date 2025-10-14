@@ -1,88 +1,96 @@
 <!doctype html>
 <html lang="en">
+
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Behind the Squares</title>
-  <link rel="stylesheet" href="css.css"> 
+  <link rel="stylesheet" href="css.css">
 </head>
+
 <body>
 
 
-<header id="siteHeader">
-  <img class="logo" src="logo.png.jpg" alt="School Logo">
-  <h1>Neliöiden takana - RPKK Avoimet ovet 2025</h1>
-</header>
+  <header id="siteHeader">
+    <img class="logo" src="logo.png.jpg" alt="School Logo">
+    <h1>Neliöiden takana - RPKK Avoimet ovet 2025</h1>
+  </header>
 
 
-<main>
-  <!-- MAIN MENU (only shown on load) -->
-  <div class="controls" id="mainMenu">
-    <button id="playBtn" class="primary">Pelaa</button>
-    <button id="viewLeaderboard" class="primary">Näytä tulostaulu</button>
-  </div>
-
-
-  <!-- GAME LAYOUT -->
-  <div class="layout" id="gameLayout" style="display:none;">
-    <!-- LEFT: Image grid -->
-    <div class="left">
-      <div class="image-box" id="imageBox" aria-hidden="false">
-        <div class="grid-overlay" id="gridOverlay" tabindex="0" aria-label="Hidden image grid"></div>
-      </div>
+  <main>
+    <!-- MAIN MENU (only shown on load) -->
+    <div class="controls" id="mainMenu">
+      <button id="playBtn" class="primary">Pelaa</button>
+      <button id="viewLeaderboard" class="primary">Näytä tulostaulu</button>
     </div>
 
 
-    <!-- RIGHT: info badges + choices -->
-    <div class="right">
-      <div class="hint">Paljasta enintään <strong>3 ruutua</strong> ja valitse oikea vaihtoehto.</div>
-
-
-      <div class="info-row" id="badgesRow">
-        <div class="badge" id="progressBadge">Kuva: 0 / 10</div>
-        <div class="badge" id="revealedBadge">Paljastettu: 0 / 3</div>
-        <div class="badge" id="scoreBadge">Pisteet: 0</div>
-      </div>
-
-
-      <div class="choices" id="choicesRow">
-        <!-- four choice buttons will be inserted here -->
-      </div>
-
-
-      <!-- end screens inside right column -->
-      <section id="endSection" class="end-screen">
-        <h3>✅ Testi on valmis!</h3>
-        <p id="finalScoreText">Sait 0 / 10 oikein.</p>
-        <p>Siinä kaikki! Teit testin! Haluatko lisätä itsesi tulostaulukkoon?</p>
-        <div style="display:flex; gap:10px; margin-top:8px;">
-          <button id="yesSave" class="primary">Kyllä</button>
-          <button id="noSave" class="primary">Ei</button>
+    <!-- GAME LAYOUT -->
+    <div class="layout" id="gameLayout" style="display:none;">
+      <!-- LEFT: Image grid -->
+      <div class="left">
+        <div class="image-box" id="imageBox" aria-hidden="false">
+          <div class="grid-overlay" id="gridOverlay" tabindex="0" aria-label="Hidden image grid"></div>
         </div>
-      </section>
+      </div>
+
+
+      <!-- RIGHT: info badges + choices -->
+      <div class="right">
+        <div class="hint">Paljasta enintään <strong>3 ruutua</strong> ja valitse oikea vaihtoehto.</div>
+
+
+        <div class="info-row" id="badgesRow">
+          <div class="badge" id="progressBadge">Kuva: 0 / 10</div>
+          <div class="badge" id="revealedBadge">Paljastettu: 0 / 3</div>
+          <div class="badge" id="scoreBadge">Pisteet: 0</div>
+        </div>
+
+
+        <div class="choices" id="choicesRow">
+          <!-- four choice buttons will be inserted here -->
+        </div>
+
+
+        <!-- end screens inside right column -->
+        <section id="endSection" class="end-screen">
+          <h3>✅ Testi on valmis!</h3>
+          <p id="finalScoreText">Sait 0 / 10 oikein.</p>
+          <p>Siinä kaikki! Teit testin! Haluatko lisätä itsesi tulostaulukkoon?</p>
+          <div style="display:flex; gap:10px; margin-top:8px;">
+            <button id="yesSave" class="primary">Kyllä</button>
+            <button id="noSave" class="primary">Ei</button>
+          </div>
+        </section>
+      </div>
+    </div>
+
+
+    <footer>RPKK Avoimet ovet 2025 - Peli “Neliöiden takana” - Kehittänyt : Lana</footer>
+  </main>
+
+
+  <!-- Full-screen stand-alone leaderboard (single-file) -->
+  <div id="leaderboardFull" class="leaderboard-full" style="display:none; opacity:0;">
+    <div class="leaderboard-card">
+      <h2 style="margin-top:0; text-align:center">🏆 Tulostaulu 🏆</h2>
+      <div style="overflow:auto;">
+        <table id="leaderboardTable">
+          <thead>
+            <tr>
+              <th>Nimimerkki</th>
+              <th>Pisteet</th>
+            </tr>
+          </thead>
+          <tbody id="leaderboardBody"></tbody>
+        </table>
+      </div>
+      <div style="display:flex; gap:10px; justify-content:center; margin-top:14px;">
+        <button id="backFromLeaderboard" class="primary">Takaisin valikkoon</button>
+      </div>
     </div>
   </div>
-
-
-  <footer>RPKK Avoimet ovet 2025 - Peli “Neliöiden takana” - Kehittänyt : Lana</footer>
-</main>
-
-
-<!-- Full-screen stand-alone leaderboard (single-file) -->
-<div id="leaderboardFull" class="leaderboard-full" style="display:none; opacity:0;">
-  <div class="leaderboard-card">
-    <h2 style="margin-top:0; text-align:center">🏆 Tulostaulu 🏆</h2>
-    <div style="overflow:auto;">
-      <table id="leaderboardTable">
-        <thead><tr><th>Nimimerkki</th><th>Pisteet</th></tr></thead>
-        <tbody id="leaderboardBody"></tbody>
-      </table>
-    </div>
-    <div style="display:flex; gap:10px; justify-content:center; margin-top:14px;">
-      <button id="backFromLeaderboard" class="primary">Takaisin valikkoon</button>
-    </div>
-  </div>
-</div>
-<script src="js.js"></script>
+  <script src="js.js"></script>
 </body>
+
 </html>
