@@ -1,39 +1,34 @@
-/// CONFIG / PUZZLES 
-/// Replace each puzzle options with real data.
-
+// CONFIG / PUZZLES
 const puzzles = [
-  { img: "img1.jpg", options: ["Museo", "Moderni toimistohotelli", "Lukio", "Kauppakoulu"], correct: 3 },
-  { img: "img2.jpg", options: ["Satunnaisia numeroita", "Salainen viesti tulevaisuudesta", "Binäärikoodi", "Tietokoneen aamupäivän ajatukset"], correct: 2 },
-  { img: "img3.jpg", options: ["Ihmisiä hienoissa huppareissa", "Salaliittoteoreetikoiden kokous", "Kyberturvatiimi", "Opiskelijat pelkäämässä virusta"], correct: 2 },
-  { img: "img4.jpg", options: ["Myrkyllisiä marjoja", "Maapähkinät", "Kaunis käsi", "Käsittelemättömät kahvipavut"], correct: 3 },
-  { img: "img5.jpg", options: ["business angel", "67", "merkonomi ala", "labubu "], correct: 0 },
-  { img: "img6.jpg", options: ["Syreeni", "Mustikkapiirakka", "Saturnus", "Hoitokoti"], correct: 0 },
-  { img: "img7.jpg", options: ["Suunnitelma maailmanvalloituksesta", "Tiimi, joka unohti miksi he kokoontuivat", "Opiskelijan tiimityö", "Kokous, joka olisi voinut olla sähköposti"], correct: 2 },
-  { img: "img8.jpg", options: ["Liiketoimintasuunnitelma", "Romaanin luonnos", "Opiskelijan ostoslista", "Monimutkainen sudoku"], correct: 0 },
+  { img: "img1.jpg", options: ["Option A", "Option B", "Option C", "Option D"], correct: 3 },
+  { img: "img2.jpg", options: ["Option A", "Option B", "Option C", "Option D"], correct: 2 },
+  { img: "img3.jpg", options: ["Option A", "Option B", "Option C", "Option D"], correct: 2 },
+  { img: "img4.jpg", options: ["Option A", "Option B", "Option C", "Option D"], correct: 3 },
+  { img: "img5.jpg", options: ["Option A", "Option B", "Option C", "Option D"], correct: 0 },
+  { img: "img6.jpg", options: ["Option A", "Option B", "Option C", "Option D"], correct: 0 },
+  { img: "img7.jpg", options: ["Option A", "Option B", "Option C", "Option D"], correct: 2 },
+  { img: "img8.jpg", options: ["Option A", "Option B", "Option C", "Option D"], correct: 0 },
   { img: "img9.jpg", options: ["Option A", "Option B", "Option C", "Option D"], correct: 0 },
   { img: "img10.jpg", options: ["Option A", "Option B", "Option C", "Option D"], correct: 0 }
 ];
 
 const LB_KEY = 'whatsbehind_leaderboard_v1';
 
-/// UI elements
+// UI elements
 const siteHeader = document.getElementById('siteHeader');
 const mainMenu = document.getElementById('mainMenu');
 const playBtn = document.getElementById('playBtn');
 const viewLeaderboardBtn = document.getElementById('viewLeaderboard');
-
 const gameLayout = document.getElementById('gameLayout');
 const gridOverlay = document.getElementById('gridOverlay');
 const progressBadge = document.getElementById('progressBadge');
 const revealedBadge = document.getElementById('revealedBadge');
 const scoreBadge = document.getElementById('scoreBadge');
 const choicesRow = document.getElementById('choicesRow');
-
 const endSection = document.getElementById('endSection');
 const finalScoreText = document.getElementById('finalScoreText');
 const yesSave = document.getElementById('yesSave');
 const noSave = document.getElementById('noSave');
-
 const leaderboardFull = document.getElementById('leaderboardFull');
 const leaderboardBody = document.getElementById('leaderboardBody');
 const backFromLeaderboard = document.getElementById('backFromLeaderboard');
@@ -44,10 +39,8 @@ let score = 0;
 const MAX_REVEALS = 3;
 let tileElements = [];
 let roundLocked = false;
-
 const TRANS_MS = 520;
 
-/// NEW: keep the original endSection HTML so we can restore it
 const END_SECTION_HTML = `
   <h3>✅ Testi on valmis!</h3>
   <p id="finalScoreText">Sait 0 / 10 oikein.</p>
@@ -58,11 +51,8 @@ const END_SECTION_HTML = `
   </div>
 `;
 
-/// Helper to restore endSection to its original markup and rebind handlers 
 function restoreEndSectionAndBind() {
   endSection.innerHTML = END_SECTION_HTML;
-
-  /// Re-bind the "Yes" button to save (we query the newly created element)
   const yes = document.getElementById('yesSave');
   if (yes) {
     yes.addEventListener('click', () => {
@@ -71,33 +61,24 @@ function restoreEndSectionAndBind() {
       saveResult(nick.trim());
     });
   }
-
-  /// Re-bind the "No" button to replace content with goodbye
   const no = document.getElementById('noSave');
   if (no) {
     no.addEventListener('click', () => {
-      /// Replace endSection with goodbye message and back button
       endSection.innerHTML = `
         <h3>😊 Hyvää päivänjatkoa!</h3>
         <div style="margin-top:10px">
           <button id="gbBack" class="primary">Takaisin valikkoon</button>
         </div>
       `;
-
-      /// Bind Back to Main Page (this restarts the program)
       const gb = document.getElementById('gbBack');
       if (gb) {
         gb.addEventListener('click', () => {
-          /// restore original endSection markup for next games
           restoreEndSectionAndBind();
-
-          /// hide endSection and reset game state so Play starts clean
           endSection.style.display = 'none';
           currentIndex = 0;
           score = 0;
           revealedCount = 0;
           roundLocked = false;
-
           buildGrid();
           showMainMenu();
           updateBadges();
@@ -107,14 +88,11 @@ function restoreEndSectionAndBind() {
   }
 }
 
-/// UI show/hide helpers 
 function hideElement(el) {
   if (!el) return;
   el.style.transition = `opacity ${TRANS_MS}ms ease`;
   el.style.opacity = 0;
-  setTimeout(() => {
-    if (el.style.display !== "none") el.style.display = 'none';
-  }, TRANS_MS);
+  setTimeout(() => { if (el.style.display !== "none") el.style.display = 'none'; }, TRANS_MS);
 }
 
 function showElement(el, display = 'block') {
@@ -144,19 +122,27 @@ function showStandaloneLeaderboard() {
   siteHeader.style.display = 'none';
   mainMenu.style.display = 'none';
   hideElement(gameLayout);
-  leaderboardBody.innerHTML = ''; renderLeaderboard();
-  leaderboardFull.style.display = 'flex'; leaderboardFull.style.opacity = 0;
-  requestAnimationFrame(() => { leaderboardFull.style.transition = `opacity ${TRANS_MS}ms ease`; leaderboardFull.style.opacity = 1; });
+  leaderboardBody.innerHTML = '';
+  renderLeaderboard();
+  leaderboardFull.style.display = 'flex';
+  leaderboardFull.style.opacity = 0;
+  requestAnimationFrame(() => {
+    leaderboardFull.style.transition = `opacity ${TRANS_MS}ms ease`;
+    leaderboardFull.style.opacity = 1;
+  });
 }
 
 function hideStandaloneLeaderboard() {
-  leaderboardFull.style.transition = `opacity ${TRANS_MS}ms ease`; leaderboardFull.style.opacity = 0;
+  leaderboardFull.style.transition = `opacity ${TRANS_MS}ms ease`;
+  leaderboardFull.style.opacity = 0;
   setTimeout(() => { leaderboardFull.style.display = 'none'; showMainMenu(); siteHeader.style.display = ''; }, TRANS_MS);
 }
 
+// Build 4x4 grid tiles
 function buildGrid() {
   gridOverlay.innerHTML = '';
   tileElements = [];
+
   for (let i = 0; i < 16; i++) {
     const tile = document.createElement('div');
     tile.className = 'tile';
@@ -169,7 +155,6 @@ function buildGrid() {
     front.className = 'tile-face tile-front';
     const coverInner = document.createElement('div');
     coverInner.className = 'cover-inner';
-    coverInner.textContent = '';
     front.appendChild(coverInner);
 
     const back = document.createElement('div');
@@ -180,13 +165,19 @@ function buildGrid() {
     tile.appendChild(inner);
 
     tile.addEventListener('click', () => onTileClick(tile));
-    tile.addEventListener('keydown', (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); onTileClick(tile); } });
+    tile.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        onTileClick(tile);
+      }
+    });
 
     gridOverlay.appendChild(tile);
     tileElements.push(tile);
   }
 }
 
+// Load puzzle slices
 function loadPuzzle(i) {
   if (i < 0) i = 0;
   if (i >= puzzles.length) i = puzzles.length - 1;
@@ -194,21 +185,45 @@ function loadPuzzle(i) {
   const p = puzzles[currentIndex];
 
   const backs = gridOverlay.querySelectorAll('.tile-back');
-  backs.forEach((backEl, idx) => {
-    const r = Math.floor(idx / 4);
-    const c = idx % 4;
-    backEl.style.backgroundImage = `url("${p.img}")`;
-    backEl.style.backgroundSize = `400% 400%`;
-    backEl.style.backgroundPosition = `${c * 25}% ${r * 25}%`;
-  });
+  const img = new Image();
+  img.src = p.img;
+
+  img.onload = () => {
+    const tileWidth = img.width / 4;
+    const tileHeight = img.height / 4;
+
+    backs.forEach((backEl, idx) => {
+      const r = Math.floor(idx / 4);
+      const c = idx % 4;
+
+      // create canvas slice
+      const canvas = document.createElement('canvas');
+      canvas.width = tileWidth;
+      canvas.height = tileHeight;
+      const ctx = canvas.getContext('2d');
+      ctx.drawImage(
+        img,
+        c * tileWidth, r * tileHeight, tileWidth, tileHeight,
+        0, 0, tileWidth, tileHeight
+      );
+
+      backEl.innerHTML = '';
+      const tileImg = new Image();
+      tileImg.src = canvas.toDataURL();
+      tileImg.style.width = '100%';
+      tileImg.style.height = '100%';
+      tileImg.style.objectFit = 'cover';
+      backEl.appendChild(tileImg);
+    });
+  };
 
   tileElements.forEach(t => { t.classList.remove('flipped', 'disabled'); t.style.pointerEvents = 'auto'; });
   revealedCount = 0;
   roundLocked = false;
 
-  if (document.getElementById('choicesRow').classList.contains('hidden')) {
-    document.getElementById('choicesRow').classList.remove('hidden');
-    showElement(document.getElementById('choicesRow'), 'flex');
+  if (choicesRow.classList.contains('hidden')) {
+    choicesRow.classList.remove('hidden');
+    showElement(choicesRow, 'flex');
   }
 
   renderChoices(p.options);
@@ -242,7 +257,6 @@ function renderChoices(options) {
 function onChoiceSelected(selectedIdx, btn) {
   if (roundLocked) return;
   roundLocked = true;
-
   choicesRow.querySelectorAll('.choice-btn').forEach(b => b.disabled = true);
 
   const p = puzzles[currentIndex];
@@ -263,7 +277,6 @@ function onChoiceSelected(selectedIdx, btn) {
       choicesEl.classList.add('hidden');
       choicesEl.style.display = 'none';
       finalScoreText.textContent = `Sait ${score} / ${puzzles.length} oikein.`;
-      /// Keep endSection visible permanently
       endSection.style.display = 'block';
       endSection.style.opacity = 1;
     }, TRANS_MS);
@@ -291,97 +304,59 @@ function finishGame() {
   endSection.style.opacity = 1;
 }
 
+// Leaderboard functions
 function readLeaderboard() {
-  try {
-    const raw = localStorage.getItem(LB_KEY);
-    if (!raw) return [];
-    return JSON.parse(raw);
-  } catch (e) { return []; }
+  try { const raw = localStorage.getItem(LB_KEY); if (!raw) return []; return JSON.parse(raw); } catch (e) { return []; }
 }
-
-function writeLeaderboard(arr) {
-  try { localStorage.setItem(LB_KEY, JSON.stringify(arr)); } catch (e) { console.error(e); }
-}
-
+function writeLeaderboard(arr) { try { localStorage.setItem(LB_KEY, JSON.stringify(arr)); } catch (e) { console.error(e); } }
 function saveResult(nickname) {
   const list = readLeaderboard();
   list.push({ name: nickname, score: score, ts: Date.now() });
-  list.sort((a, b) => (b.score - a.score) || (b.ts - a.ts));
+  list.sort((a,b)=> (b.score-a.score) || (b.ts-a.ts));
   writeLeaderboard(list);
   renderLeaderboard();
   showStandaloneLeaderboard();
 }
-
 function renderLeaderboard() {
   leaderboardBody.innerHTML = '';
   const list = readLeaderboard();
   if (list.length === 0) {
     const tr = document.createElement('tr');
-    const td = document.createElement('td'); td.colSpan = 2; td.style.padding = '12px'; td.textContent = 'No entries yet';
+    const td = document.createElement('td'); td.colSpan=2; td.style.padding='12px'; td.textContent='No entries yet';
     tr.appendChild(td); leaderboardBody.appendChild(tr); return;
   }
-  list.forEach(entry => {
-    const tr = document.createElement('tr');
-    const n = document.createElement('td'); n.textContent = entry.name;
-    const s = document.createElement('td'); s.textContent = entry.score;
+  list.forEach(entry=>{
+    const tr=document.createElement('tr');
+    const n=document.createElement('td'); n.textContent=entry.name;
+    const s=document.createElement('td'); s.textContent=entry.score;
     tr.appendChild(n); tr.appendChild(s); leaderboardBody.appendChild(tr);
   });
 }
 
-playBtn.addEventListener('click', () => {
-  currentIndex = 0; score = 0;
+// Event bindings
+playBtn.addEventListener('click', ()=>{
+  currentIndex=0; score=0;
   buildGrid();
   showGameScreen();
-  setTimeout(() => loadPuzzle(0), 80);
+  setTimeout(()=>loadPuzzle(0),80);
 });
-
-viewLeaderboardBtn.addEventListener('click', () => {
-  renderLeaderboard();
-  showStandaloneLeaderboard();
-});
-
-yesSave.addEventListener('click', () => {
+viewLeaderboardBtn.addEventListener('click', ()=>{ renderLeaderboard(); showStandaloneLeaderboard(); });
+yesSave.addEventListener('click', ()=>{
   const nick = prompt("Enter your nickname:");
-  if (!nick || !nick.trim()) { alert("Nickname can't be empty."); return; }
+  if(!nick||!nick.trim()){ alert("Nickname can't be empty."); return; }
   saveResult(nick.trim());
 });
-
-///* ✅ Updated No button behavior: replace endSection content with goodbye and Back button */
-noSave.addEventListener('click', () => {
-  endSection.innerHTML = `
-    <h3>😊 Hyvää päivänjatkoa!</h3>
-    <div style="margin-top:10px">
-      <button id="gbBack" class="primary">Takaisin valikkoon</button>
-    </div>
-  `;
-
-  /// Bind back button (restores the original endSection and resets game)
-  const gb = document.getElementById('gbBack');
-  if (gb) {
-    gb.addEventListener('click', () => {
-      /// restore original end-screen markup and handlers
-      restoreEndSectionAndBind();
-
-      /// hide endSection and reset state so Play restarts clean
-      endSection.style.display = 'none';
-      currentIndex = 0;
-      score = 0;
-      revealedCount = 0;
-      roundLocked = false;
-
-      buildGrid();
-      showMainMenu();
-      updateBadges();
-    });
-  }
+noSave.addEventListener('click', ()=>{
+  endSection.innerHTML=`<h3>😊 Hyvää päivänjatkoa!</h3><div style="margin-top:10px"><button id="gbBack" class="primary">Takaisin valikkoon</button></div>`;
+  const gb=document.getElementById('gbBack');
+  if(gb){ gb.addEventListener('click', ()=>{
+    restoreEndSectionAndBind();
+    endSection.style.display='none';
+    currentIndex=0; score=0; revealedCount=0; roundLocked=false;
+    buildGrid(); showMainMenu(); updateBadges();
+  }); }
 });
+backFromLeaderboard.addEventListener('click', ()=>hideStandaloneLeaderboard());
 
-backFromLeaderboard.addEventListener('click', () => hideStandaloneLeaderboard());
-
-function init() {
-  buildGrid();
-  showMainMenu();
-  updateBadges();
-}
+function init(){ buildGrid(); showMainMenu(); updateBadges(); }
 init();
-/// End of script 
