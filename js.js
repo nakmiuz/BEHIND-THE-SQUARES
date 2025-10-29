@@ -312,7 +312,7 @@ function writeLeaderboard(arr) { try { localStorage.setItem(LB_KEY, JSON.stringi
 function saveResult(nickname) {
   const list = readLeaderboard();
   list.push({ name: nickname, score: score, ts: Date.now() });
-  list.sort((a,b)=> (b.score-a.score) || (b.ts-a.ts));
+  list.sort((a, b) => (b.score - a.score) || (b.ts - a.ts));
   writeLeaderboard(list);
   renderLeaderboard();
   showStandaloneLeaderboard();
@@ -322,41 +322,43 @@ function renderLeaderboard() {
   const list = readLeaderboard();
   if (list.length === 0) {
     const tr = document.createElement('tr');
-    const td = document.createElement('td'); td.colSpan=2; td.style.padding='12px'; td.textContent='No entries yet';
+    const td = document.createElement('td'); td.colSpan = 2; td.style.padding = '12px'; td.textContent = 'No entries yet';
     tr.appendChild(td); leaderboardBody.appendChild(tr); return;
   }
-  list.forEach(entry=>{
-    const tr=document.createElement('tr');
-    const n=document.createElement('td'); n.textContent=entry.name;
-    const s=document.createElement('td'); s.textContent=entry.score;
+  list.forEach(entry => {
+    const tr = document.createElement('tr');
+    const n = document.createElement('td'); n.textContent = entry.name;
+    const s = document.createElement('td'); s.textContent = entry.score;
     tr.appendChild(n); tr.appendChild(s); leaderboardBody.appendChild(tr);
   });
 }
 
 // Event bindings
-playBtn.addEventListener('click', ()=>{
-  currentIndex=0; score=0;
+playBtn.addEventListener('click', () => {
+  currentIndex = 0; score = 0;
   buildGrid();
   showGameScreen();
-  setTimeout(()=>loadPuzzle(0),80);
+  setTimeout(() => loadPuzzle(0), 80);
 });
-viewLeaderboardBtn.addEventListener('click', ()=>{ renderLeaderboard(); showStandaloneLeaderboard(); });
-yesSave.addEventListener('click', ()=>{
+viewLeaderboardBtn.addEventListener('click', () => { renderLeaderboard(); showStandaloneLeaderboard(); });
+yesSave.addEventListener('click', () => {
   const nick = prompt("Enter your nickname:");
-  if(!nick||!nick.trim()){ alert("Nickname can't be empty."); return; }
+  if (!nick || !nick.trim()) { alert("Nickname can't be empty."); return; }
   saveResult(nick.trim());
 });
-noSave.addEventListener('click', ()=>{
-  endSection.innerHTML=`<h3>😊 Hyvää päivänjatkoa!</h3><div style="margin-top:10px"><button id="gbBack" class="primary">Takaisin valikkoon</button></div>`;
-  const gb=document.getElementById('gbBack');
-  if(gb){ gb.addEventListener('click', ()=>{
-    restoreEndSectionAndBind();
-    endSection.style.display='none';
-    currentIndex=0; score=0; revealedCount=0; roundLocked=false;
-    buildGrid(); showMainMenu(); updateBadges();
-  }); }
+noSave.addEventListener('click', () => {
+  endSection.innerHTML = `<h3>😊 Hyvää päivänjatkoa!</h3><div style="margin-top:10px"><button id="gbBack" class="primary">Takaisin valikkoon</button></div>`;
+  const gb = document.getElementById('gbBack');
+  if (gb) {
+    gb.addEventListener('click', () => {
+      restoreEndSectionAndBind();
+      endSection.style.display = 'none';
+      currentIndex = 0; score = 0; revealedCount = 0; roundLocked = false;
+      buildGrid(); showMainMenu(); updateBadges();
+    });
+  }
 });
-backFromLeaderboard.addEventListener('click', ()=>hideStandaloneLeaderboard());
+backFromLeaderboard.addEventListener('click', () => hideStandaloneLeaderboard());
 
-function init(){ buildGrid(); showMainMenu(); updateBadges(); }
+function init() { buildGrid(); showMainMenu(); updateBadges(); }
 init();
