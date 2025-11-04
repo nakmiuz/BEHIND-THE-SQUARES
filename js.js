@@ -8,8 +8,8 @@ const puzzles = [
   { img: "img6.jpg", options: ["Syreeni", "Mustikkapiirakka", "Saturnus", "Hoitokoti"], correct: 0 },
   { img: "img7.jpg", options: ["Suunnitelma maailmanvalloituksesta", "Tiimi, joka unohti miksi he kokoontuivat", "Opiskelijan tiimityö", "Kokous, joka olisi voinut olla sähköposti"], correct: 2 },
   { img: "img8.jpg", options: ["Liiketoimintasuunnitelma", "Romaanin luonnos", "Opiskelijan ostoslista", "Monimutkainen sudoku"], correct: 0 },
-  { img: "img9.jpg", options: ["Option A", "Option B", "Option C", "Option D"], correct: 0 },
-  { img: "img10.jpg", options: ["Option A", "Option B", "Option C", "Option D"], correct: 0 }
+  { img: "img9.jpg", options: ["Sadepilvi, joka sataa dataa", "Pilvipalvelu", "Salainen supertietokone", "Kannettava tietokone leijumassa pilvien keskellä taivaalla"], correct: 1 },
+  { img: "img10.jpg", options: ["Skeleton", "poika", "Raahe eSports Academy", "POIka2"], correct: 2 }
 ];
 
 const LB_KEY = 'whatsbehind_leaderboard_v1';
@@ -56,8 +56,8 @@ function restoreEndSectionAndBind() {
   const yes = document.getElementById('yesSave');
   if (yes) {
     yes.addEventListener('click', () => {
-      const nick = prompt("Enter your nickname:");
-      if (!nick || !nick.trim()) { alert("Nickname can't be empty."); return; }
+      const nick = prompt("Anna nimimerkkisi:");
+      if (!nick || !nick.trim()) { alert("Nimimerkki ei voi olla tyhjä."); return; }
       saveResult(nick.trim());
     });
   }
@@ -342,8 +342,8 @@ playBtn.addEventListener('click', () => {
 });
 viewLeaderboardBtn.addEventListener('click', () => { renderLeaderboard(); showStandaloneLeaderboard(); });
 yesSave.addEventListener('click', () => {
-  const nick = prompt("Enter your nickname:");
-  if (!nick || !nick.trim()) { alert("Nickname can't be empty."); return; }
+  const nick = prompt("Anna nimimerkkisi:");
+  if (!nick || !nick.trim()) { alert("Nimimerkki ei voi olla tyhjä."); return; }
   saveResult(nick.trim());
 });
 noSave.addEventListener('click', () => {
