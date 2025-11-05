@@ -9,7 +9,7 @@ const puzzles = [
   { img: "img7.jpg", options: ["Suunnitelma maailmanvalloituksesta", "Tiimi, joka unohti miksi he kokoontuivat", "Opiskelijan tiimityö", "Kokous, joka olisi voinut olla sähköposti"], correct: 2 },
   { img: "img8.jpg", options: ["Liiketoimintasuunnitelma", "Romaanin luonnos", "Opiskelijan ostoslista", "Monimutkainen sudoku"], correct: 0 },
   { img: "img9.jpg", options: ["Sadepilvi, joka sataa dataa", "Pilvipalvelu", "Salainen supertietokone", "Kannettava tietokone leijumassa pilvien keskellä taivaalla"], correct: 1 },
-  { img: "img10.jpg", options: ["Skeleton", "poika", "Raahe eSports Academy", "POIka2"], correct: 2 }
+  { img: "img10.jpg", options: ["Poika tekee verkko-ostoksia", "E-urheilija", "Raahe eSports Academy", "Hienot kuulokkeet"], correct: 2 }
 ];
 
 const LB_KEY = 'whatsbehind_leaderboard_v1';
@@ -42,7 +42,7 @@ let roundLocked = false;
 const TRANS_MS = 520;
 
 const END_SECTION_HTML = `
-  <h3>✅ Testi on valmis!</h3>
+  <h3>Testi on valmis! ✅</h3>
   <p id="finalScoreText">Sait 0 / 10 oikein.</p>
   <p>Siinä kaikki! Teit testin! Haluatko lisätä itsesi tulostaulukoon?</p>
   <div style="display:flex; gap:10px; margin-top:8px;">
@@ -65,7 +65,7 @@ function restoreEndSectionAndBind() {
   if (no) {
     no.addEventListener('click', () => {
       endSection.innerHTML = `
-        <h3>😊 Hyvää päivänjatkoa!</h3>
+        <h3>Hyvää päivänjatkoa! 😊</h3>
         <div style="margin-top:10px">
           <button id="gbBack" class="primary">Takaisin valikkoon</button>
         </div>
@@ -263,9 +263,9 @@ function onChoiceSelected(selectedIdx, btn) {
   const correct = (selectedIdx === p.correct);
   if (correct) {
     score = Math.min(10, score + 1);
-    setTimeout(() => alert('✅ Oikein!'), 80);
+    setTimeout(() => alert('Oikein! ✅'), 80);
   } else {
-    setTimeout(() => alert('❌ Väärin!'), 80);
+    setTimeout(() => alert('Väärin! ❌'), 80);
   }
   updateBadges();
 
@@ -322,7 +322,7 @@ function renderLeaderboard() {
   const list = readLeaderboard();
   if (list.length === 0) {
     const tr = document.createElement('tr');
-    const td = document.createElement('td'); td.colSpan = 2; td.style.padding = '12px'; td.textContent = 'No entries yet';
+    const td = document.createElement('td'); td.colSpan = 2; td.style.padding = '12px'; td.textContent = 'Ei merkintöjä vielä.';
     tr.appendChild(td); leaderboardBody.appendChild(tr); return;
   }
   list.forEach(entry => {
@@ -347,7 +347,7 @@ yesSave.addEventListener('click', () => {
   saveResult(nick.trim());
 });
 noSave.addEventListener('click', () => {
-  endSection.innerHTML = `<h3>😊 Hyvää päivänjatkoa!</h3><div style="margin-top:10px"><button id="gbBack" class="primary">Takaisin valikkoon</button></div>`;
+  endSection.innerHTML = `<h3>Hyvää päivänjatkoa! 😊 </h3><div style="margin-top:10px"><button id="gbBack" class="primary">Takaisin valikkoon</button></div>`;
   const gb = document.getElementById('gbBack');
   if (gb) {
     gb.addEventListener('click', () => {
