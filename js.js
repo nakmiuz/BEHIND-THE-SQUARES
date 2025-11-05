@@ -347,7 +347,7 @@ yesSave.addEventListener('click', () => {
   saveResult(nick.trim());
 });
 noSave.addEventListener('click', () => {
-  endSection.innerHTML = `<h3>Hyvää päivänjatkoa! 😊 </h3><div style="margin-top:10px"><button id="gbBack" class="primary">Takaisin valikkoon</button></div>`;
+  endSection.innerHTML = `<h3>Hyvää päivänjatkoa! 😊</h3><div style="margin-top:10px"><button id="gbBack" class="primary">Takaisin valikkoon</button></div>`;
   const gb = document.getElementById('gbBack');
   if (gb) {
     gb.addEventListener('click', () => {
