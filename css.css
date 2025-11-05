@@ -1,3 +1,42 @@
+#mainMenu {
+  display: flex;
+  flex-direction: column;
+  /* stack image then buttons */
+  align-items: center;
+  /* center horizontally */
+  justify-content: flex-start;
+  /* keep content near top */
+  height: 100vh;
+  padding-top: 80px;
+  /* move down slightly from top */
+  text-align: center;
+}
+
+.pictureformainmenu {
+  width: 300px;
+  /* adjust as needed */
+  max-width: 80%;
+  height: auto;
+  margin-bottom: 20px;
+  /* space between image and buttons */
+}
+
+.menu-buttons {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+  /* space between buttons */
+}
+
+#mainMenu .primary {
+  padding: 12px 28px;
+  font-size: 1.1em;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
 :root {
   --black: #000000;
   --blue: #5682B1;
