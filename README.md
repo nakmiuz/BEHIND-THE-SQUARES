@@ -16,16 +16,16 @@ Key Mechanics:
   
 Gameplay: The player must guess what’s in the picture while revealing as few squares as possible.
 
-Peli “Neliöiden takana”; Pelinkehitysprojekti oppilaitoksen Avoimet ovet 2025 - tapahtumaa varten
+Peli “Neliöiden takana”; Pelinkehitysprojekti oppilaitoksen Avoimet ovet 2025 - tapahtumaa varten.
 
 Arvaa piilotettu kuva paljastamalla ruutuja – hauskaa, yksinkertaista ja RPKK-teemaista!
 
-Tyyppi: Piilotettu kuva / Pulmapeli
+Tyyppi: Piilotettu kuva / Pulmapeli.
 
 Kuvaus: Pieni tietovisa-/arvauspeli. Kuva on piilotettu neliöruudukon taakse. Pelaaja klikkaa ruutuja paljastaakseen osia kuvasta ja yrittää arvata, mitä kuvassa on.
 
 Keskeiset mekaniikat:
-- Kuva on peitetty 16 ruudulla
+- Kuva on peitetty 16 ruudulla.
 - Pelaaja paljastaa osia kuvasta klikkaamalla ruutuja (paljastettujen ruutujen enimmäismäärä on 3).
 - Pelin lopuksi pelaajat voivat tallentaa tuloksensa tulostaululle.
 - Tulostaulu synkronoituu globaalisti Firebase’n kautta ja tallennus tapahtuu localStorageen.
