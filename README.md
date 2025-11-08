@@ -9,6 +9,7 @@ Key Mechanics:
 - The player reveals parts of the image by clicking on the squares.
 - The goal is to guess the image while uncovering as few squares as possible.
 - At the end, players can save their results on the leaderboard.
+- Leaderboard sync globally via Firebase + saving via localStorage
 Gameplay: The player must guess what’s in the picture while revealing a maximum of three squares.
 
 Peli “Neliöiden takana”; Pelinkehitysprojekti oppilaitoksen Avoimet ovet 2025 - tapahtumaa varten
@@ -21,4 +22,5 @@ Pelin päämekaniikat:
 - Pelaaja paljastaa osia kuvasta klikkaamalla ruutuja.
 - Tavoitteena on arvata kuva paljastamalla mahdollisimman vähän ruutuja.
 - Pelin lopuksi pelaaja voi tallentaa tuloksensa tulostaulukkoon.
+- Minun tulostauluni (Leaderboard) synkronoituu globaalisti Firebase’n kautta ja tallennus tapahtuu localStorageen.
 Pelin kulku: Pelaajan tehtävänä on arvata, mitä kuvassa on, paljastamalla enintään kolme ruutua.
