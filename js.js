@@ -33,6 +33,9 @@ const leaderboardFull = document.getElementById('leaderboardFull');
 const leaderboardBody = document.getElementById('leaderboardBody');
 const backFromLeaderboard = document.getElementById('backFromLeaderboard');
 
+
+
+
 let currentIndex = 0;
 let revealedCount = 0;
 let score = 0;
@@ -40,6 +43,9 @@ const MAX_REVEALS = 3;
 let tileElements = [];
 let roundLocked = false;
 const TRANS_MS = 520;
+
+
+
 
 const END_SECTION_HTML = `
   <h3>Testi on valmis! ✅</h3>
@@ -50,6 +56,9 @@ const END_SECTION_HTML = `
     <button id="noSave" class="primary">Ei</button>
   </div>
 `;
+
+
+
 
 function restoreEndSectionAndBind() {
   endSection.innerHTML = END_SECTION_HTML;
@@ -88,12 +97,18 @@ function restoreEndSectionAndBind() {
   }
 }
 
+
+
+
 function hideElement(el) {
   if (!el) return;
   el.style.transition = `opacity ${TRANS_MS}ms ease`;
   el.style.opacity = 0;
   setTimeout(() => { if (el.style.display !== "none") el.style.display = 'none'; }, TRANS_MS);
 }
+
+
+
 
 function showElement(el, display = 'block') {
   if (!el) return;
@@ -104,6 +119,9 @@ function showElement(el, display = 'block') {
   });
 }
 
+
+
+
 function showMainMenu() {
   siteHeader.style.display = ''; siteHeader.style.opacity = 1;
   mainMenu.style.display = 'flex'; mainMenu.style.opacity = 1;
@@ -111,12 +129,18 @@ function showMainMenu() {
   hideElement(leaderboardFull);
 }
 
+
+
+
 function showGameScreen() {
   siteHeader.style.display = ''; siteHeader.style.opacity = 1;
   hideElement(mainMenu);
   hideElement(leaderboardFull);
   showElement(gameLayout, 'flex');
 }
+
+
+
 
 function showStandaloneLeaderboard() {
   siteHeader.style.display = 'none';
@@ -132,24 +156,39 @@ function showStandaloneLeaderboard() {
   });
 }
 
+
+
+
 function hideStandaloneLeaderboard() {
   leaderboardFull.style.transition = `opacity ${TRANS_MS}ms ease`;
   leaderboardFull.style.opacity = 0;
   setTimeout(() => { leaderboardFull.style.display = 'none'; showMainMenu(); siteHeader.style.display = ''; }, TRANS_MS);
 }
 
+
+
+
 // Build 4x4 grid tiles
 function buildGrid() {
   gridOverlay.innerHTML = '';
   tileElements = [];
+
+
+
 
   for (let i = 0; i < 16; i++) {
     const tile = document.createElement('div');
     tile.className = 'tile';
     tile.tabIndex = 0;
 
+
+
+
     const inner = document.createElement('div');
     inner.className = 'tile-inner';
+
+
+
 
     const front = document.createElement('div');
     front.className = 'tile-face tile-front';
@@ -157,12 +196,21 @@ function buildGrid() {
     coverInner.className = 'cover-inner';
     front.appendChild(coverInner);
 
+
+
+
     const back = document.createElement('div');
     back.className = 'tile-face tile-back';
+
+
+
 
     inner.appendChild(front);
     inner.appendChild(back);
     tile.appendChild(inner);
+
+
+
 
     tile.addEventListener('click', () => onTileClick(tile));
     tile.addEventListener('keydown', (e) => {
@@ -172,10 +220,16 @@ function buildGrid() {
       }
     });
 
+
+
+
     gridOverlay.appendChild(tile);
     tileElements.push(tile);
   }
 }
+
+
+
 
 // Load puzzle slices
 function loadPuzzle(i) {
@@ -184,17 +238,29 @@ function loadPuzzle(i) {
   currentIndex = i;
   const p = puzzles[currentIndex];
 
+
+
+
   const backs = gridOverlay.querySelectorAll('.tile-back');
   const img = new Image();
   img.src = p.img;
+
+
+
 
   img.onload = () => {
     const tileWidth = img.width / 4;
     const tileHeight = img.height / 4;
 
+
+
+
     backs.forEach((backEl, idx) => {
       const r = Math.floor(idx / 4);
       const c = idx % 4;
+
+
+
 
       // create canvas slice
       const canvas = document.createElement('canvas');
@@ -207,6 +273,9 @@ function loadPuzzle(i) {
         0, 0, tileWidth, tileHeight
       );
 
+
+
+
       backEl.innerHTML = '';
       const tileImg = new Image();
       tileImg.src = canvas.toDataURL();
@@ -217,18 +286,30 @@ function loadPuzzle(i) {
     });
   };
 
+
+
+
   tileElements.forEach(t => { t.classList.remove('flipped', 'disabled'); t.style.pointerEvents = 'auto'; });
   revealedCount = 0;
   roundLocked = false;
+
+
+
 
   if (choicesRow.classList.contains('hidden')) {
     choicesRow.classList.remove('hidden');
     showElement(choicesRow, 'flex');
   }
 
+
+
+
   renderChoices(p.options);
   updateBadges();
 }
+
+
+
 
 function onTileClick(tile) {
   if (roundLocked) return;
@@ -242,6 +323,9 @@ function onTileClick(tile) {
   updateBadges();
 }
 
+
+
+
 function renderChoices(options) {
   choicesRow.innerHTML = '';
   options.forEach((opt, idx) => {
@@ -254,10 +338,16 @@ function renderChoices(options) {
   });
 }
 
+
+
+
 function onChoiceSelected(selectedIdx, btn) {
   if (roundLocked) return;
   roundLocked = true;
   choicesRow.querySelectorAll('.choice-btn').forEach(b => b.disabled = true);
+
+
+
 
   const p = puzzles[currentIndex];
   const correct = (selectedIdx === p.correct);
@@ -268,6 +358,9 @@ function onChoiceSelected(selectedIdx, btn) {
     setTimeout(() => alert('Väärin! ❌'), 80);
   }
   updateBadges();
+
+
+
 
   if (currentIndex === puzzles.length - 1) {
     const choicesEl = document.getElementById('choicesRow');
@@ -283,6 +376,9 @@ function onChoiceSelected(selectedIdx, btn) {
     return;
   }
 
+
+
+
   setTimeout(() => {
     if (currentIndex < puzzles.length - 1) {
       loadPuzzle(currentIndex + 1);
@@ -292,11 +388,17 @@ function onChoiceSelected(selectedIdx, btn) {
   }, TRANS_MS);
 }
 
+
+
+
 function updateBadges() {
   progressBadge.textContent = `Kuva: ${Math.min(currentIndex + 1, puzzles.length)} / ${puzzles.length}`;
   revealedBadge.textContent = `Paljastettu: ${revealedCount} / ${MAX_REVEALS}`;
   scoreBadge.textContent = `Pisteet: ${score}`;
 }
+
+
+
 
 function finishGame() {
   finalScoreText.textContent = `Sait ${score} / ${puzzles.length} oikein.`;
@@ -304,34 +406,89 @@ function finishGame() {
   endSection.style.opacity = 1;
 }
 
+
+
+
 // Leaderboard functions
 function readLeaderboard() {
   try { const raw = localStorage.getItem(LB_KEY); if (!raw) return []; return JSON.parse(raw); } catch (e) { return []; }
 }
 function writeLeaderboard(arr) { try { localStorage.setItem(LB_KEY, JSON.stringify(arr)); } catch (e) { console.error(e); } }
 function saveResult(nickname) {
+  const entry = { name: nickname, score: score, ts: Date.now() };
+
+  // ---- Local save ----
   const list = readLeaderboard();
-  list.push({ name: nickname, score: score, ts: Date.now() });
+  list.push(entry);
   list.sort((a, b) => (b.score - a.score) || (b.ts - a.ts));
   writeLeaderboard(list);
+
+  // ---- Firebase save ----
+  try {
+    const dbRef = firebase.database().ref('leaderboard');
+    dbRef.push(entry);
+  } catch (err) {
+    console.error('Firebase save failed:', err);
+  }
+
   renderLeaderboard();
   showStandaloneLeaderboard();
 }
+
 function renderLeaderboard() {
   leaderboardBody.innerHTML = '';
-  const list = readLeaderboard();
-  if (list.length === 0) {
-    const tr = document.createElement('tr');
-    const td = document.createElement('td'); td.colSpan = 2; td.style.padding = '12px'; td.textContent = 'Ei merkintöjä vielä.';
-    tr.appendChild(td); leaderboardBody.appendChild(tr); return;
-  }
-  list.forEach(entry => {
-    const tr = document.createElement('tr');
-    const n = document.createElement('td'); n.textContent = entry.name;
-    const s = document.createElement('td'); s.textContent = entry.score;
-    tr.appendChild(n); tr.appendChild(s); leaderboardBody.appendChild(tr);
+
+  // ---- Local data ----
+  const localList = readLeaderboard();
+
+  // ---- Firebase data ----
+  const dbRef = firebase.database().ref('leaderboard');
+  dbRef.once('value', snapshot => {
+    const data = snapshot.val();
+    let combined = [...localList];
+
+    if (data) {
+      const firebaseList = Object.values(data);
+      combined = [...combined, ...firebaseList];
+    }
+
+    // Remove duplicates by nickname (keep best score)
+    const unique = {};
+    combined.forEach(e => {
+      if (!unique[e.name] || e.score > unique[e.name].score) {
+        unique[e.name] = e;
+      }
+    });
+
+    const sorted = Object.values(unique)
+      .sort((a, b) => (b.score - a.score) || (a.ts - b.ts));
+
+    if (sorted.length === 0) {
+      const tr = document.createElement('tr');
+      const td = document.createElement('td');
+      td.colSpan = 2;
+      td.style.padding = '12px';
+      td.textContent = 'Ei merkintöjä vielä.';
+      tr.appendChild(td);
+      leaderboardBody.appendChild(tr);
+      return;
+    }
+
+    sorted.forEach(entry => {
+      const tr = document.createElement('tr');
+      const n = document.createElement('td');
+      n.textContent = entry.name;
+      const s = document.createElement('td');
+      s.textContent = entry.score;
+      tr.appendChild(n);
+      tr.appendChild(s);
+      leaderboardBody.appendChild(tr);
+    });
   });
 }
+
+
+
 
 // Event bindings
 playBtn.addEventListener('click', () => {
@@ -359,6 +516,9 @@ noSave.addEventListener('click', () => {
   }
 });
 backFromLeaderboard.addEventListener('click', () => hideStandaloneLeaderboard());
+
+
+
 
 function init() { buildGrid(); showMainMenu(); updateBadges(); }
 init();
