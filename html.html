@@ -22,8 +22,8 @@
     <div class="controls" id="mainMenu">
       <img class="pictureformainmenu" src="mainmenupic.png" alt="pictureformainmenu">
       <div class="menu-buttons">
-      <button id="playBtn" class="primary">Pelaa</button>
-      <button id="viewLeaderboard" class="primary">Näytä tulostaulu</button>
+        <button id="playBtn" class="primary">Pelaa</button>
+        <button id="viewLeaderboard" class="primary">Näytä tulostaulu</button>
       </div>
     </div>
 
@@ -93,23 +93,23 @@
       </div>
     </div>
   </div>
-  
+
   <!-- Firebase scripts -->
   <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-database-compat.js"></script>
-<script>
-  const firebaseConfig = {
-    apiKey: "AIzaSyACLKNyEi5N-6rLio5Y6JNmeKNRUqKIBPY",
-    authDomain: "behind-the-squares.firebaseapp.com",
-    databaseURL: "https://behind-the-squares-default-rtdb.europe-west1.firebasedatabase.app/",
-    projectId: "behind-the-squares",
-    storageBucket: "behind-the-squares.firebasestorage.app",
-    messagingSenderId: "874309899265",
-    appId: "1:874309899265:web:fe583e1d5b10961d6edc00",
-    measurementId: "G-K2Q1QZ44J3"
-  };
-  firebase.initializeApp(firebaseConfig);
-</script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-database-compat.js"></script>
+  <script>
+    const firebaseConfig = {
+      apiKey: "AIzaSyACLKNyEi5N-6rLio5Y6JNmeKNRUqKIBPY",
+      authDomain: "behind-the-squares.firebaseapp.com",
+      databaseURL: "https://behind-the-squares-default-rtdb.europe-west1.firebasedatabase.app/",
+      projectId: "behind-the-squares",
+      storageBucket: "behind-the-squares.firebasestorage.app",
+      messagingSenderId: "874309899265",
+      appId: "1:874309899265:web:fe583e1d5b10961d6edc00",
+      measurementId: "G-K2Q1QZ44J3"
+    };
+    firebase.initializeApp(firebaseConfig);
+  </script>
 
   <!-- Main JS file (game code) -->
   <script src="js.js"></script>
