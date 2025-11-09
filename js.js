@@ -49,11 +49,7 @@ const END_SECTION_HTML = `
   <div style="display:flex; gap:10px; margin-top:8px;">
     <button id="yesSave" class="primary">Kyllä</button>
     <button id="noSave" class="primary">Ei</button>
-  </div>
-`;
-
-
-
+  </div>`;
 
 function restoreEndSectionAndBind() {
   endSection.innerHTML = END_SECTION_HTML;
