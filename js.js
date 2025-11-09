@@ -33,9 +33,7 @@ const leaderboardFull = document.getElementById('leaderboardFull');
 const leaderboardBody = document.getElementById('leaderboardBody');
 const backFromLeaderboard = document.getElementById('backFromLeaderboard');
 
-
-
-
+// GAME STATE
 let currentIndex = 0;
 let revealedCount = 0;
 let score = 0;
@@ -43,9 +41,6 @@ const MAX_REVEALS = 3;
 let tileElements = [];
 let roundLocked = false;
 const TRANS_MS = 520;
-
-
-
 
 const END_SECTION_HTML = `
   <h3>Testi on valmis! ✅</h3>
