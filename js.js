@@ -426,7 +426,7 @@ function saveResult(nickname) {
   const entry = { name: nickname, score: score, ts: Date.now() };
 
   
-  // ---- Firebase save ----
+  // Firebase save
   try {
     const dbRef = firebase.database().ref('leaderboard');
     dbRef.push(entry);
@@ -441,10 +441,10 @@ function saveResult(nickname) {
 function renderLeaderboard() {
   leaderboardBody.innerHTML = '';
 
-  // ---- Local data ----
+  // Local data
   const localList = readLeaderboard();
 
-  // ---- Firebase data ----
+  // Firebase data
   const dbRef = firebase.database().ref('leaderboard');
   dbRef.once('value', snapshot => {
     const data = snapshot.val();
