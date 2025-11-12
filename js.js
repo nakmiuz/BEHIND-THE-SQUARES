@@ -43,8 +43,8 @@ let roundLocked = false;
 const TRANS_MS = 520;
 
 const END_SECTION_HTML = `
-  <h3>Testi on valmis! ✅</h3>
-  <p id="finalScoreText">Sait 0 / 10 oikein.</p>
+  <h3>Testi on valmis!</h3>
+  <p id="finalScoreText"></p>
   <p>Siinä kaikki! Teit testin! Haluatko lisätä itsesi tulostaulukoon?</p>
   <div style="display:flex; gap:10px; margin-top:8px;">
     <button id="yesSave" class="primary">Kyllä</button>
@@ -181,11 +181,19 @@ function buildGrid() {
 
 
 
+
+
+
+
     const front = document.createElement('div');
     front.className = 'tile-face tile-front';
     const coverInner = document.createElement('div');
     coverInner.className = 'cover-inner';
     front.appendChild(coverInner);
+
+
+
+
 
 
 
@@ -267,6 +275,10 @@ function loadPuzzle(i) {
 
 
 
+
+
+
+
       backEl.innerHTML = '';
       const tileImg = new Image();
       tileImg.src = canvas.toDataURL();
@@ -280,9 +292,14 @@ function loadPuzzle(i) {
 
 
 
+
+
+
+
   tileElements.forEach(t => { t.classList.remove('flipped', 'disabled'); t.style.pointerEvents = 'auto'; });
   revealedCount = 0;
   roundLocked = false;
+
 
 
 
@@ -344,9 +361,9 @@ function onChoiceSelected(selectedIdx, btn) {
   const correct = (selectedIdx === p.correct);
   if (correct) {
     score = Math.min(10, score + 1);
-    setTimeout(() => alert('Oikein! ✅'), 80);
+    setTimeout(() => alert('Oikein!'), 80);
   } else {
-    setTimeout(() => alert('Väärin! ❌'), 80);
+    setTimeout(() => alert('Väärin!'), 80);
   }
   updateBadges();
 
@@ -408,12 +425,7 @@ function writeLeaderboard(arr) { try { localStorage.setItem(LB_KEY, JSON.stringi
 function saveResult(nickname) {
   const entry = { name: nickname, score: score, ts: Date.now() };
 
-  // ---- Local save ----
-  const list = readLeaderboard();
-  list.push(entry);
-  list.sort((a, b) => (b.score - a.score) || (b.ts - a.ts));
-  writeLeaderboard(list);
-
+  
   // ---- Firebase save ----
   try {
     const dbRef = firebase.database().ref('leaderboard');
