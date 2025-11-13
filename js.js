@@ -5,7 +5,7 @@ const puzzles = [
   { img: "img3.jpg", options: ["Ihmisiä hienoissa huppareissa", "Salaliittoteoreetikoiden kokous", "Kyberturvatiimi", "Opiskelijat pelkäämässä virusta"], correct: 2 },
   { img: "img4.jpg", options: ["Myrkyllisiä marjoja", "Maapähkinät", "Kaunis käsi", "Käsittelemättömät kahvipavut"], correct: 3 },
   { img: "img5.jpg", options: ["business angel", "67", "merkonomi ala", "labubu "], correct: 0 },
-  { img: "img6.jpg", options: ["Syreeni", "Mustikkapiirakka", "Saturnus", "Hoitokoti"], correct: 0 },
+  { img: "img6.jpg", options: ["Syreeni", "Mustikkapiirakka", "Saturnus", "Kaunis talo"], correct: 0 },
   { img: "img7.jpg", options: ["Suunnitelma maailmanvalloituksesta", "Tiimi, joka unohti miksi he kokoontuivat", "Opiskelijan tiimityö", "Kokous, joka olisi voinut olla sähköposti"], correct: 2 },
   { img: "img8.jpg", options: ["Liiketoimintasuunnitelma", "Romaanin luonnos", "Opiskelijan ostoslista", "Monimutkainen sudoku"], correct: 0 },
   { img: "img9.jpg", options: ["Sadepilvi, joka sataa dataa", "Pilvipalvelu", "Salainen supertietokone", "Kannettava tietokone leijumassa pilvien keskellä taivaalla"], correct: 1 },
