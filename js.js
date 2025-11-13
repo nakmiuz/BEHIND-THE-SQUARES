@@ -425,8 +425,7 @@ function writeLeaderboard(arr) { try { localStorage.setItem(LB_KEY, JSON.stringi
 function saveResult(nickname) {
   const entry = { name: nickname, score: score, ts: Date.now() };
 
-  
-  // Firebase save
+  // Save to Firebase
   try {
     const dbRef = firebase.database().ref('leaderboard');
     dbRef.push(entry);
@@ -434,6 +433,17 @@ function saveResult(nickname) {
     console.error('Firebase save failed:', err);
   }
 
+  // Reset the game screen so the end message disappears next time
+  endSection.style.display = 'none';
+  restoreEndSectionAndBind();
+  currentIndex = 0;
+  score = 0;
+  revealedCount = 0;
+  roundLocked = false;
+  buildGrid();
+  updateBadges();
+
+  // Then show the leaderboard
   renderLeaderboard();
   showStandaloneLeaderboard();
 }
